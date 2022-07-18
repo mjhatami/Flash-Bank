@@ -20,7 +20,8 @@ export let PersonSchema: Schema = new Schema({
   timestamps:true,
   toJSON:{getters:true}
 })
-PersonSchema.pre('save', (next)=>{
+// For password
+PersonSchema.pre('save', function (next) {
 
   if(this.isModified('password') || this.isNew){
     const person = this
@@ -44,6 +45,13 @@ PersonSchema.pre('save', (next)=>{
     return next()
   }
 }})
+// For Graph DB sync
+PersonSchema.pre('save',function (next){
+  if(this.isNew){
+    //neode create new node
+  
+  }
+})
 PersonSchema.methods.comparePassword = function(password, callback) {
   bcrypt.compare(password, this.password, function(error, isMatch) {
     if (error) {
